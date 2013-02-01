@@ -59,4 +59,25 @@ class Util
         return $result === 0;
     }
 
+    public static function intToBytes($num)
+    {
+        $output = "";
+        while($num > 0) {
+            $output .= chr($num & 0xff);
+            $num >>= 8;
+        }
+        return strrev($output);
+    }
+
+    public static function bytesToInt($bytes) {
+        $output = 0;
+        foreach (str_split($bytes) as $byte) {
+            if ($output > 0) {
+                $output <<= 8;
+            }
+            $output += ord($byte);
+        }
+        return $output;
+    }
+
 }
