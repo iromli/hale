@@ -16,7 +16,7 @@ class Util
      */
     public static function base64Encode($str)
     {
-        return trim(strtr(base64_encode($str), '+/', '-_'), '=');
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
     /**

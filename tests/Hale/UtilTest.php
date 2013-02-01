@@ -19,7 +19,6 @@ class UtilTest extends \PHPUnit_Framework_TestCase
         $haystack = Util::base64Decode('-YSBzZWNyZXQgc3RyaW5n_');
         $this->assertNotContains('-', $haystack);
         $this->assertNotContains('_', $haystack);
-        $this->assertNotContains('=', $haystack);
     }
 
 }
