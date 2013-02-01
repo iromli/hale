@@ -1,7 +1,7 @@
 <?php
-namespace Hale;
+namespace Hale\Signer;
 
-class Signer
+class BaseSigner
 {
 
     public function __construct(
@@ -11,8 +11,8 @@ class Signer
         $keyDerivation = null
     ) {
         $this->secretKey = $secretKey;
-        $this->sep = $sep;
         $this->salt = $salt ?: 'Hale.Signer';
+        $this->sep = $sep;
         $this->keyDerivation = $keyDerivation ?: 'default';
     }
 

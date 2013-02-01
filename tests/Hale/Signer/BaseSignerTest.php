@@ -1,41 +1,41 @@
 <?php
 namespace Hale;
 
-use \Hale\Signer;
+use \Hale\Signer\BaseSigner;
 
 class SignerTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetSignatureDefault()
     {
-        $signer = new Signer('secretkey', '.', 'testing');
+        $signer = new BaseSigner('secretkey', 'testing');
         $this->assertEquals(
-            'lpo0X_mDjkpAMT4kRlZIhm3wvrc',
+            'HopKjiR_kQL1OCapGadFAvNd2X4',
             $signer->getSignature('hale')
         );
     }
 
     public function testGetSignatureConcat()
     {
-        $signer = new Signer('secretkey', '.', 'testing', 'concat');
+        $signer = new BaseSigner('secretkey', 'testing', '.', 'concat');
         $this->assertEquals(
-            'gDOhR05CiaUi-Sc7RWQdUBCeuDI',
+            '9uRYhK2FAK_-9U8AWCD4aAoAehw',
             $signer->getSignature('hale')
         );
     }
 
     public function testGetSignatureHMAC()
     {
-        $signer = new Signer('secretkey', '.', 'testing', 'hmac');
+        $signer = new BaseSigner('secretkey', 'testing', '.', 'hmac');
         $this->assertEquals(
-            'aV7mf48DbrsLs9FU1z78LmwmNzw',
+            '1McL-UOJfEaeDOoyu613afTnCtU',
             $signer->getSignature('hale')
         );
     }
 
     public function testGetSignatureRandom()
     {
-        $signer = new Signer('secretkey', '.', 'testing', 'random');
+        $signer = new BaseSigner('secretkey', 'testing', '.', 'random');
         $this->setExpectedException('InvalidArgumentException');
         $this->assertEquals(
             'r4nd0m516n4tur3',
@@ -45,8 +45,8 @@ class SignerTest extends \PHPUnit_Framework_TestCase
 
     public function testSign()
     {
-        $signer = new Signer('secretkey');
-        $signedStr = 'hale.NpskTt46QpgdwRBc5-rQ_zvgNuI';
+        $signer = new BaseSigner('secretkey', 'testing');
+        $signedStr = 'hale.HopKjiR_kQL1OCapGadFAvNd2X4';
         $this->assertEquals($signedStr, $signer->sign('hale'));
     }
 
