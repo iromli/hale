@@ -3,7 +3,7 @@ namespace Hale;
 
 use \Hale\Signer\BaseSigner;
 
-class SignerTest extends \PHPUnit_Framework_TestCase
+class BaseSignerTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetSignatureDefault()
@@ -48,6 +48,31 @@ class SignerTest extends \PHPUnit_Framework_TestCase
         $signer = new BaseSigner('secretkey', 'testing');
         $signedStr = 'hale.HopKjiR_kQL1OCapGadFAvNd2X4';
         $this->assertEquals($signedStr, $signer->sign('hale'));
+    }
+
+    public function testUnsignNoSeparator()
+    {
+        $signer = new BaseSigner('secretkey', 'testing');
+        $signedStr = 'hale#HopKjiR_kQL1OCapGadFAvNd2X4';
+
+        $this->setExpectedException('Hale\Exception\BadSignatureException');
+        $this->assertEquals('hale', $signer->unsign($signedStr));
+    }
+
+    public function testUnsignDoesNotMatch()
+    {
+        $signer = new BaseSigner('secretkey', 'testing');
+        $signedStr = 'hale.HopKjiR_kQL1OCapGadFAvNd2X';
+
+        $this->setExpectedException('Hale\Exception\BadSignatureException');
+        $this->assertEquals('hale', $signer->unsign($signedStr));
+    }
+
+    public function testUnsign()
+    {
+        $signer = new BaseSigner('secretkey', 'testing');
+        $signedStr = 'hale.HopKjiR_kQL1OCapGadFAvNd2X4';
+        $this->assertEquals('hale', $signer->unsign($signedStr));
     }
 
 }

@@ -1,6 +1,9 @@
 <?php
 namespace Hale\Signer;
 
+use \Hale\Exception\BadSignatureException;
+use \Hale\Util;
+
 class BaseSigner
 {
 
@@ -21,6 +24,25 @@ class BaseSigner
         return $value . $this->sep . $this->getSignature($value);
     }
 
+    public function unsign($signedValue)
+    {
+        if (strpos($signedValue, $this->sep) === false) {
+            throw new BadSignatureException(
+                sprintf('No "%s" found in value', $this->sep)
+            );
+        }
+
+        list($value, $sig) = explode($this->sep, $signedValue);
+
+        if (Util::constantTimeCompare($sig, $this->getSignature($value))) {
+            return $value;
+        }
+
+        throw new BadSignatureException(
+            sprintf('Signature "%s" does not match', $sig)
+        );
+    }
+
     public function deriveKey()
     {
         switch ($this->keyDerivation) {
@@ -39,7 +61,7 @@ class BaseSigner
     {
         $key = $this->deriveKey();
         $signature = hash_hmac('sha1', $value, $key, true);
-        return \Hale\Util::base64Encode($signature);
+        return Util::base64Encode($signature);
     }
 
 }

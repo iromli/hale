@@ -35,4 +35,28 @@ class Util
         ));
     }
 
+    /**
+     * Compares two strings.
+     *
+     * This method implements a constant-time algorithm to compare
+     * strings to avoid (remote) timing attacks.
+     *
+     * @param string value1 The first string
+     * @param string value2 The second string
+     *
+     * @return boolean True if 2 values are the same, otherwise false
+     */
+    public static function constantTimeCompare($value1, $value2)
+    {
+        if (strlen($value1) !== strlen($value2)) {
+            return false;
+        }
+
+        $result = 0;
+        for ($i = 0; $i < strlen($value1); $i++) {
+            $result |= ord($value1[$i]) ^ ord($value2[$i]);
+        }
+        return $result === 0;
+    }
+
 }
