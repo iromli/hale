@@ -5,3 +5,10 @@ php:
 
 script:
   - phpunit tests
+
+notifications:
+  email:
+    recipients:
+      - isman.firmansyah@gmail.com
+    on_success: never
+    on_failure: always
