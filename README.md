@@ -1,6 +1,8 @@
 Hale
 ====
 
+[![Build Status](https://travis-ci.org/iromli/hale.png)](https://travis-ci.org/iromli/hale)
+
 Yet another PHP port of Armin's [itsdangerous](https://github.com/mitsuhiko/itsdangerous) library.
 
 Differences
