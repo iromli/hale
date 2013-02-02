@@ -39,7 +39,9 @@ class Signer
             );
         }
 
-        list($value, $sig) = explode($this->sep, $signedValue);
+        $exploded = explode($this->sep, $signedValue);
+        $sig = array_pop($exploded);
+        $value = implode($this->sep, $exploded);
 
         if (Util::constantTimeCompare($sig, $this->getSignature($value))) {
             return $value;

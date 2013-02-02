@@ -105,12 +105,14 @@ class TimestampSigner extends Signer
         // except someone uses a time-based serializer on non-timestamp data, so catch that.
         if (strpos($result, $this->sep) === false) {
             if ($sigError) {
-                throw new $sigError;
+                throw $sigError;
             }
             throw new BadTimeSignatureException('Timestamp missing', $result);
         }
 
-        list($value, $timestamp) = explode($this->sep, $result);
+        $exploded = explode($this->sep, $result);
+        $timestamp = array_pop($exploded);
+        $value = implode($this->sep, $exploded);
 
         try {
             $timestamp = Util::bytesToInt(Util::base64Decode($timestamp));
@@ -132,10 +134,10 @@ class TimestampSigner extends Signer
 
         // Check `$timestamp` is not older than `$maxAge`.
         if ($maxAge) {
-            $age = self.getTimestamp() - $timestamp;
+            $age = $this->getTimestamp() - $timestamp;
             if ($age > $maxAge) {
                 throw new SignatureExpiredException(
-                    sprintf('Signature age %s > %s seconds', age, max_age),
+                    sprintf('Signature age %s > %s seconds', $age, $maxAge),
                     $value,
                     $this->timestampToDatetime($timestamp)
                 );

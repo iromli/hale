@@ -1,5 +1,5 @@
 <?php
-namespace Hale\Exception;
+namespace Hale;
 
 use \Hale\BadTimeSignatureException;
 
