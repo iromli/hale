@@ -1,7 +1,7 @@
 <?php
-namespace Hale\Signer;
+namespace Hale;
 
-use \Hale\Signer\BaseSigner;
+use \Hale\Signer;
 use \Hale\Util;
 
 // 2011/01/01 in UTC
@@ -15,7 +15,7 @@ define('EPOCH', 1293840000);
   * if the unsigning failed because the signature is expired.
   * This exception is a subclass of `Hale\Exception\BadTimeSignatureException`.
   */
-class TimestampSigner extends BaseSigner
+class TimestampSigner extends Signer
 {
 
     /**

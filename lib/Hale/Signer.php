@@ -1,10 +1,10 @@
 <?php
-namespace Hale\Signer;
+namespace Hale;
 
-use \Hale\Exception\BadSignatureException;
+use \Hale\BadSignatureException;
 use \Hale\Util;
 
-class BaseSigner
+class Signer
 {
 
     public function __construct(

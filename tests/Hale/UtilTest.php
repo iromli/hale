@@ -2,8 +2,9 @@
 namespace Hale;
 
 use Hale\Util;
+use \PHPUnit_Framework_TestCase;
 
-class UtilTest extends \PHPUnit_Framework_TestCase
+class UtilTest extends PHPUnit_Framework_TestCase
 {
 
     public function testBase64Encode()

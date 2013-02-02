@@ -1,7 +1,7 @@
 <?php
 namespace Hale\Exception;
 
-use \Hale\Exception\BadTimeSignatureException;
+use \Hale\BadTimeSignatureException;
 
 /**
  * Signature timestamp is older than required `maxAge`.

@@ -1,10 +1,12 @@
 <?php
-namespace Hale\Exception;
+namespace Hale;
+
+use \Exception;
 
 /**
  * This error is raised if a signature does not match.
  */
-class BadSignatureException extends \Exception
+class BadSignatureException extends Exception
 {
 
     public function __construct(

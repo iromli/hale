@@ -1,7 +1,7 @@
 <?php
-namespace Hale\Exception;
+namespace Hale;
 
-use \Hale\Exception\BadSignatureException;
+use \Hale\BadSignatureException;
 
 /**
  * Raised for time based signatures that fail.
