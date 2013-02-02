@@ -1,8 +1,12 @@
 <?php
 namespace Hale;
 
+use \Exception;
 use \Hale\Signer;
 use \Hale\Util;
+use \Hale\BadSignatureException;
+use \Hale\BadTimeSignatureException;
+use \Hale\SignatureExpiredException;
 
 // 2011/01/01 in UTC
 define('EPOCH', 1293840000);
@@ -56,6 +60,12 @@ class TimestampSigner extends Signer
         return $datetime;
     }
 
+    /**
+     * Signs the given string and also attaches a time information.
+     *
+     * @param string $value Plain string
+     * @return string Signed string
+     */
     public function sign($value)
     {
         $timestamp = Util::base64Encode(Util::intToBytes(
@@ -63,6 +73,79 @@ class TimestampSigner extends Signer
         ));
         $value = $value . $this->sep . $timestamp;
         return $value . $this->sep . $this->getSignature($value);
+    }
+
+    /**
+     * Works like the regular `Signer::unsign` but can also validate the time.
+     * See the base docstring of the class for the general behavior.
+     * If `$returnTimestamp` is set to `true` the timestamp of the signature
+     * will be returned as naive `DateTime` object in UTC.
+     *
+     * @param string $signedValue
+     * @param integer $maxAge Maximum age in second
+     * @param boolean $returnTimestamp
+     * @return array|string Returns array if $returnTimestamp set to true, otherwise a string
+     */
+    public function unsign(
+        $signedValue,
+        $maxAge = null,
+        $returnTimestamp = False
+    ) {
+        try {
+            $sigError = null;
+            $result = parent::unsign($signedValue);
+        } catch (BadSignatureException $e) {
+            $sigError = $e;
+            $result = $e->payload;
+        }
+
+        // If there is no timestamp in the result there is something seriously wrong.
+        // In case there was a signature error, we raise that one directly,
+        // otherwise we have a weird situation in which we shouldn't have come
+        // except someone uses a time-based serializer on non-timestamp data, so catch that.
+        if (strpos($result, $this->sep) === false) {
+            if ($sigError) {
+                throw new $sigError;
+            }
+            throw new BadTimeSignatureException('Timestamp missing', $result);
+        }
+
+        list($value, $timestamp) = explode($this->sep, $result);
+
+        try {
+            $timestamp = Util::bytesToInt(Util::base64Decode($timestamp));
+        } catch (Exception $e) {
+            $timestamp = null;
+        }
+
+        // Signature is *not* okay.
+        // Raise a proper error now that we have split the value and the timestamp.
+        if (!is_null($sigError)) {
+            throw new BadTimeSignatureException($sigError, $value, $timestamp);
+        }
+
+        // Signature was okay but the timestamp is actually not there or malformed.
+        // Should not happen, but well. We handle it nonetheless.
+        if (!$timestamp) {
+            throw new BadTimeSignatureException('Malformed timestamp', $value);
+        }
+
+        // Check `$timestamp` is not older than `$maxAge`.
+        if ($maxAge) {
+            $age = self.getTimestamp() - $timestamp;
+            if ($age > $maxAge) {
+                throw new SignatureExpiredException(
+                    sprintf('Signature age %s > %s seconds', age, max_age),
+                    $value,
+                    $this->timestampToDatetime($timestamp)
+                );
+            }
+        }
+
+        if ($returnTimestamp) {
+            return array($value, $this->timestampToDatetime($timestamp));
+        }
+        return $value;
     }
 
 }
