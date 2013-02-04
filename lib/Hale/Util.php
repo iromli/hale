@@ -80,4 +80,33 @@ class Util
         return $output;
     }
 
+    public static function urlsafeLoadPayload($payload)
+    {
+        $decompress = false;
+        if ($payload[0] == '.') {
+            $payload = substr($payload, 1);
+            $decompress = true;
+        }
+        $json = self::base64Decode($payload);
+        if ($decompress) {
+            $json = gzuncompress($json);
+        }
+        return $json;
+    }
+
+    public static function urlsafeDumpPayload($json)
+    {
+        $is_compressed = false;
+        $compressed = gzcompress($json);
+        if (strlen($compressed) < strlen($json) - 1) {
+            $json = $compressed;
+            $is_compressed = true;
+        }
+        $base64d = self::base64Encode($json);
+        if ($is_compressed) {
+            $base64d = '.' . $base64d;
+        }
+        return $base64d;
+    }
+
 }
