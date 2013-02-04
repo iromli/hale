@@ -1,9 +1,9 @@
 <?php
-namespace Hale;
+namespace Hale\Serializer;
 
 use \ReflectionClass;
 use \Hale\SimpleJSON;
-use \Hale\Signer;
+use \Hale\Signer\Signer;
 
 class Serializer
 {

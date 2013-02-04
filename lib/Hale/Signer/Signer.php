@@ -1,8 +1,8 @@
 <?php
-namespace Hale;
+namespace Hale\Signer;
 
 use \InvalidArgumentException;
-use \Hale\BadSignatureException;
+use \Hale\Exception\BadSignatureException;
 use \Hale\Util;
 
 class Signer

@@ -1,12 +1,12 @@
 <?php
-namespace Hale;
+namespace Hale\Signer;
 
 use \Exception;
-use \Hale\Signer;
+use \Hale\Signer\Signer;
 use \Hale\Util;
-use \Hale\BadSignatureException;
-use \Hale\BadTimeSignatureException;
-use \Hale\SignatureExpiredException;
+use \Hale\Exception\BadSignatureException;
+use \Hale\Exception\BadTimeSignatureException;
+use \Hale\Exception\SignatureExpiredException;
 
 // 2011/01/01 in UTC
 define('EPOCH', 1293840000);

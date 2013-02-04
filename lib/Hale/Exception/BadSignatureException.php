@@ -1,5 +1,5 @@
 <?php
-namespace Hale;
+namespace Hale\Exception;
 
 use \Exception;
 

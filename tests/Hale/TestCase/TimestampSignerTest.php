@@ -1,7 +1,7 @@
 <?php
-namespace Hale;
+namespace Hale\TestCase;
 
-use \Hale\TimestampSigner;
+use \Hale\Signer\TimestampSigner;
 use \PHPUnit_Framework_TestCase;
 
 class TimestampSignerTest extends PHPUnit_Framework_TestCase
@@ -23,7 +23,7 @@ class TimestampSignerTest extends PHPUnit_Framework_TestCase
 
     public function testSign()
     {
-        $stub = $this->getMockBuilder('\Hale\TimestampSigner')
+        $stub = $this->getMockBuilder('\Hale\Signer\TimestampSigner')
                      ->setConstructorArgs(array('secretkey', 'testing'))
                      ->getMock();
 

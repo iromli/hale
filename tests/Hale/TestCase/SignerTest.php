@@ -1,7 +1,7 @@
 <?php
-namespace Hale;
+namespace Hale\TestCase;
 
-use \Hale\Signer;
+use \Hale\Signer\Signer;
 use \PHPUnit_Framework_TestCase;
 
 class BaseSignerTest extends PHPUnit_Framework_TestCase
@@ -56,7 +56,7 @@ class BaseSignerTest extends PHPUnit_Framework_TestCase
         $signer = new Signer('secretkey', 'testing');
         $signedStr = 'hale#HopKjiR_kQL1OCapGadFAvNd2X4';
 
-        $this->setExpectedException('Hale\BadSignatureException');
+        $this->setExpectedException('Hale\Exception\BadSignatureException');
         $this->assertEquals('hale', $signer->unsign($signedStr));
     }
 
@@ -65,7 +65,7 @@ class BaseSignerTest extends PHPUnit_Framework_TestCase
         $signer = new Signer('secretkey', 'testing');
         $signedStr = 'hale.HopKjiR_kQL1OCapGadFAvNd2X';
 
-        $this->setExpectedException('Hale\BadSignatureException');
+        $this->setExpectedException('Hale\Exception\BadSignatureException');
         $this->assertEquals('hale', $signer->unsign($signedStr));
     }
 
