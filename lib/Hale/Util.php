@@ -80,7 +80,7 @@ class Util
         return $output;
     }
 
-    public static function urlsafeLoadPayload($payload)
+    public static function urlsafeLoad($payload)
     {
         $decompress = false;
         if ($payload[0] == '.') {
@@ -94,7 +94,7 @@ class Util
         return $json;
     }
 
-    public static function urlsafeDumpPayload($json)
+    public static function urlsafeDump($json)
     {
         $is_compressed = false;
         $compressed = gzcompress($json);
