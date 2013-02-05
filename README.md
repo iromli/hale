@@ -27,7 +27,7 @@ Kudos
 Todo
 ----
 
-1. Make `Hale` as Composer-installable library.
+1. <del>Make `Hale` as Composer-installable library.</del>
 2. Create example to check the interoptability with the real `itsdangerous` library (likely in separate repo).
 
 Copyright
