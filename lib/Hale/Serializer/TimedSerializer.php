@@ -9,12 +9,14 @@ class TimedSerializer extends Serializer
 
     public function loads($json, $maxAge = null, $returnTimestamp = false)
     {
-        list($base64d, $timestamp) = $this->getSigner()->unsign($json, $maxAge, $returnTimestamp);
-        $payload = $this->loadPayload($base64d);
         if ($returnTimestamp) {
-            return array($payload, $timestamp);
+            list($base64d, $timestamp) = $this->getSigner()->unsign(
+                $json, $maxAge, $returnTimestamp
+            );
+            return array($this->loadPayload($base64d), $timestamp);
         }
-        return $payload;
+        $base64d = $this->getSigner()->unsign($json, $maxAge);
+        return $this->loadPayload($base64d);
     }
 
     public function getSigner()
@@ -28,6 +30,3 @@ class TimedSerializer extends Serializer
     }
 
 }
-
-
-
