@@ -4,6 +4,7 @@ namespace Hale\Signer;
 use \InvalidArgumentException;
 use \Hale\Exception\BadSignatureException;
 use \Hale\Util;
+use \Hale\Hash\SHA1;
 
 class Signer
 {
@@ -12,12 +13,14 @@ class Signer
         $secretKey,
         $salt = null,
         $sep = '.',
-        $keyDerivation = null
+        $keyDerivation = null,
+        $digestClass = null
     ) {
         $this->secretKey = $secretKey;
         $this->salt = $salt ?: 'Hale.Signer';
         $this->sep = $sep;
         $this->keyDerivation = $keyDerivation ?: 'default';
+        $this->digestClass = $digestClass ?: new SHA1();
     }
 
     public function sign($value)
@@ -63,11 +66,13 @@ class Signer
     {
         switch ($this->keyDerivation) {
             case 'default':
-                return sha1($this->salt . 'signer' . $this->secretKey, true);
+                return $this->digestClass->digest($this->salt . 'signer' . $this->secretKey);
             case 'concat':
-                return sha1($this->salt . $this->secretKey, true);
+                return $this->digestClass->digest($this->salt . $this->secretKey);
             case 'hmac':
-                return hash_hmac('sha1', $this->salt, $this->secretKey, true);
+                return hash_hmac(
+                    $this->digestClass->name, $this->salt, $this->secretKey, true
+                );
             default:
                 throw new InvalidArgumentException('Unknown key derivation method');
         }
