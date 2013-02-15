@@ -1,5 +1,5 @@
 <?php
-namespace Hale;
+namespace Hale\TestCase;
 
 use \PHPUnit_Framework_TestCase;
 
